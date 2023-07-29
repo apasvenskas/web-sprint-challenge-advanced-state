@@ -1,4 +1,5 @@
 import axios from "axios";
+import { response } from "express";
 
 // ❗ You don't need to add extra action creators to achieve MVP
 export function moveClockwise() { }
@@ -19,7 +20,7 @@ export function resetForm() { }
 export function fetchQuiz() {
   return function (dispatch) {
     dispatch(setQuiz());
-    axios.get('http://localhost:9000/api/quiz/nex')
+    axios.get('http://localhost:9000/api/quiz/next')
       .then(response => {
         dispatch(setQuiz(response.data));
       })
@@ -33,6 +34,16 @@ export function fetchQuiz() {
 }
 export function postAnswer() {
   return function (dispatch) {
+    const selectedAnswer = getState().selectAnswer
+    axios.post('http://localhost:9000/api/quiz/new', selectedAnswer)
+    .then(response => {
+      dispatch(resetAnswer());
+      dispatch(setMessage(response.data.message));
+      dispatch(fetchQuiz());
+    })
+    .catch(error => {
+      console.error(error);
+    });
     // On successful POST:
     // - Dispatch an action to reset the selected answer state
     // - Dispatch an action to set the server message to state
@@ -41,6 +52,15 @@ export function postAnswer() {
 }
 export function postQuiz() {
   return function (dispatch) {
+    const quizData = getState().quizData;
+    axios.post('http://localhost:9000/api/quiz/new', quizData)
+      .then(response => {
+        dispatch(setMessage(response.data.message));
+        dispatch(resetForm());
+      })
+      .catch(error => {
+        console.error(error);
+      })
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form
