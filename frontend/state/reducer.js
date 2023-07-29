@@ -1,5 +1,6 @@
 // ❗ You don't need to add extra reducers to achieve MVP
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux';
+import { connect } from 'react-redux';
 
 const initialWheelState = 0
 function wheel(state = initialWheelState, action) {
