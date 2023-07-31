@@ -1,5 +1,5 @@
 import axios from "axios";
-import { response } from "express";
+import * as types from './action-types';
 
 // ❗ You don't need to add extra action creators to achieve MVP
 export function moveClockwise() { }
@@ -10,7 +10,10 @@ export function selectAnswer() { }
 
 export function setMessage() { }
 
-export function setQuiz() { }
+export function setQuiz(quiz) { 
+  const info = {type: types.SET_QUIZ_INTO_STATE, payload: quiz}
+  return info;
+}
 
 export function inputChange() { }
 
@@ -19,14 +22,14 @@ export function resetForm() { }
 // ❗ Async action creators
 export function fetchQuiz() {
   return function (dispatch) {
-    dispatch(setQuiz());
     axios.get('http://localhost:9000/api/quiz/next')
       .then(response => {
-        dispatch(setQuiz(response.data));
+        dispatch(setQuiz(response));
       })
       .catch(error => {
         console.error(error);
       })
+    
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
     // On successful GET:
     // - Dispatch an action to send the obtained quiz to its state
@@ -53,7 +56,7 @@ export function postAnswer() {
 export function postQuiz() {
   return function (dispatch) {
     const quizData = getState().quizData;
-    axios.post('http://localhost:9000/api/quiz/new', quizData)
+    axios.post('http://localhost:9000/api/quiz/answer', quizData)
       .then(response => {
         dispatch(setMessage(response.data.message));
         dispatch(resetForm());
@@ -67,3 +70,4 @@ export function postQuiz() {
   }
 }
 // ❗ On promise rejections, use log statements or breakpoints, and put an appropriate error message in state
+

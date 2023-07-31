@@ -1,14 +1,14 @@
 import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
-import { fetchQuiz, selectAnswer, postAnswer } from '../state/action-creators';
+import * as actions from '../state/action-creators';
 
 function Quiz(props) {
   const {quiz, selectedAnswer, fetchQuiz, selectAnswer, postAnswer} = props;
-
+  
   // function that runs when component mounts
   useEffect(() => {
     fetchQuiz();
-  }, [fetchQuiz]);
+  }, []);
 
   // return selected class name bosed on the answer state
   const getSelectedClass = (answer) => {
@@ -55,12 +55,6 @@ const mapStateProps = (state) => {
   };
 };
 
-const mapDispatchProps = (dispatch) => {
-  return {
-    fetchQuiz: () => dispatch(fetchQuiz()), // dispatch the fetch quiz action
-    selectAnswer: (answer) => dispatch(selectAnswer(answer)), //dispatch selected answer
-    postAnswer: () => dispatch(postAnswer()),
-  };
-};
 
-export default connect(mapStateProps, mapDispatchProps)(Quiz);
+
+export default connect(mapStateProps, {fetchQuiz: actions.fetchQuiz, selectAnswer: actions.selectAnswer, postAnswer: actions.postAnswer})(Quiz);
