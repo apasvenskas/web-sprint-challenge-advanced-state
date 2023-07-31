@@ -2,9 +2,17 @@ import axios from "axios";
 import * as types from './action-types';
 
 // ❗ You don't need to add extra action creators to achieve MVP
-export function moveClockwise() { }
+export function moveClockwise() { 
+  return {
+    type: types.MOVE_CLOCKWISE
+  }
+}
 
-export function moveCounterClockwise() { }
+export function moveCounterClockwise() {
+  return{
+    type: types.MOVE_COUNTERCLOCKWISE
+  }
+ }
 
 export function selectAnswer() { }
 
@@ -36,7 +44,7 @@ export function fetchQuiz() {
   }
 }
 export function postAnswer() {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     const selectedAnswer = getState().selectAnswer
     axios.post('http://localhost:9000/api/quiz/new', selectedAnswer)
     .then(response => {
