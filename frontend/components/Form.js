@@ -1,15 +1,18 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import * as actionCreators from '../state/action-creators'
+import React from 'react';
+import { connect } from 'react-redux';
+import { inputChange, resetForm, setQuiz } from '../state/action-creators';
+//import * as actionCreators from '../state/action-creators'
 
 export function Form(props) {
 
   const onChange = evt => {
-
+    props.inputChange(evt.taget.id, evt.target.value); 
   }
 
   const onSubmit = evt => {
-
+    evt.preventDefault();
+    props.setQuiz(props.form);
+    props.resetForm();
   }
 
   return (
@@ -23,4 +26,4 @@ export function Form(props) {
   )
 }
 
-export default connect(st => st, actionCreators)(Form)
+export default connect(st => st, {inputChange, setQuiz, resetForm})(Form)
