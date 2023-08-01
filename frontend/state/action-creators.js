@@ -14,35 +14,61 @@ export function moveCounterClockwise() {
   }
  }
 
-export function selectAnswer() { }
+export function selectAnswer(answer) {
+  const questions = {type: types.SET_SELECTED_ANSWER, payload: answer}
+  return questions;
+ }
 
-export function setMessage() { }
+export function setMessage(message) {
+  const notification = {type: types.SET_INFO_MESSAGE, payload: message}
+  return notification;
+ }
 
 export function setQuiz(quiz) { 
   const info = {type: types.SET_QUIZ_INTO_STATE, payload: quiz}
   return info;
 }
 
-export function inputChange() { }
+export function inputChange(name, value) {
+  return {
+    type: types.INPUT_CHANGE,
+    payload: {
+      name: name,
+      value: value
+    }
+  }
+ }
 
 export function resetForm() { }
 
 // ❗ Async action creators
+// export async function fetchQuiz() {
+//   try {
+//     const API_URL = 'http://localhost:9000/api/quiz/next';
+//     const response = await axios.get(API_URL);
+//     dispatch(setQuiz(response.data));
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
 export function fetchQuiz() {
   return function (dispatch) {
-    axios.get('http://localhost:9000/api/quiz/next')
-      .then(response => {
-        dispatch(setQuiz(response));
+    const API_URL = 'http://localhost:9000/api/quiz/next';
+      axios.get(API_URL)
+      .then((response) => {
+        dispatch(setQuiz(response.data));
       })
       .catch(error => {
         console.error(error);
       })
+    }
+  }
     
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
     // On successful GET:
     // - Dispatch an action to send the obtained quiz to its state
-  }
-}
+  
+
 export function postAnswer() {
   return function (dispatch, getState) {
     const selectedAnswer = getState().selectAnswer
@@ -64,7 +90,7 @@ export function postAnswer() {
 export function postQuiz() {
   return function (dispatch) {
     const quizData = getState().quizData;
-    axios.post('http://localhost:9000/api/quiz/answer', quizData)
+    axios.post('http://localhost:9000/api/quiz/answre', quizData)
       .then(response => {
         dispatch(setMessage(response.data.message));
         dispatch(resetForm());
@@ -78,4 +104,6 @@ export function postQuiz() {
   }
 }
 // ❗ On promise rejections, use log statements or breakpoints, and put an appropriate error message in state
+
+
 
