@@ -76,10 +76,11 @@ export function fetchQuiz() {
 export function postAnswer() {
   return function (dispatch, getState) {
     const selectedAnswer = getState().selectedAnswer;
-    const requestData = { answer_id: selectedAnswer };
+    const quizId = getState().quiz.quiz_id;
+    const requestData = { answer_id: selectedAnswer, quiz_id: quizId };
     axios.post('http://localhost:9000/api/quiz/answer', requestData)
     .then(response => {
-      dispatch(resetAnswer());
+      dispatch(resetForm());
       dispatch(setMessage(response.data.message));
       dispatch(fetchQuiz());
     })
