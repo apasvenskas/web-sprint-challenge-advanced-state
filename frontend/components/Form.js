@@ -6,7 +6,7 @@ import { inputChange, resetForm, setQuiz } from '../state/action-creators';
 export function Form(props) {
 
   const onChange = evt => {
-    props.inputChange(evt.taget.id, evt.target.value); 
+    props.inputChange(evt.target.id, evt.target.value); 
   }
 
   const onSubmit = evt => {

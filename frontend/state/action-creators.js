@@ -39,7 +39,11 @@ export function inputChange(name, value) {
   }
  }
 
-export function resetForm() { }
+export function resetForm() {
+  return {
+    type: types.RESET_FORM
+  }
+ }
 
 // ❗ Async action creators
 // export async function fetchQuiz() {
@@ -71,8 +75,9 @@ export function fetchQuiz() {
 
 export function postAnswer() {
   return function (dispatch, getState) {
-    const selectedAnswer = getState().selectAnswer
-    axios.post('http://localhost:9000/api/quiz/new', selectedAnswer)
+    const selectedAnswer = getState().selectedAnswer;
+    const requestData = { answer_id: selectedAnswer };
+    axios.post('http://localhost:9000/api/quiz/answer', requestData)
     .then(response => {
       dispatch(resetAnswer());
       dispatch(setMessage(response.data.message));
@@ -90,7 +95,7 @@ export function postAnswer() {
 export function postQuiz() {
   return function (dispatch) {
     const quizData = getState().quizData;
-    axios.post('http://localhost:9000/api/quiz/answre', quizData)
+    axios.post('http://localhost:9000/api/quiz/new', quizData)
       .then(response => {
         dispatch(setMessage(response.data.message));
         dispatch(resetForm());

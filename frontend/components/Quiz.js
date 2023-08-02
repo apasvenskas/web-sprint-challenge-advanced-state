@@ -9,6 +9,11 @@ function Quiz(props) {
  // use dispatch hook to create a dispatch
  const dispatch = useDispatch();
 
+ if(quiz) {
+  console.log('quiz.false_answer:', quiz.answers[0].answer_id);
+  console.log('quiz.true_answer:',  quiz.answers[1].answer_id);
+ }
+
  useEffect(() => {
   dispatch(actions.fetchQuiz())
  }, []);
@@ -29,14 +34,14 @@ function Quiz(props) {
             <div id="quizAnswers">
               <div className={`answer ${getSelectedClass(quiz.true_answer)}`}>
                 {quiz.true_answer_text}
-                <button onClick={() => dispatch(actions.selectAnswer(quiz.true_answer))}>
+                <button onClick={() => dispatch(actions.selectAnswer(quiz.answers[0].answer_id))}>
                   {selectedAnswer === quiz.true_answer ? 'SELECTED' : 'Select'}
                 </button>
               </div>
 
               <div className={`answer ${getSelectedClass(quiz.false_answer)}`}>
                 {quiz.false_answer_text}
-                <button onClick={() => dispatch(actions.selectAnswer(quiz.false_answer))}>
+                <button onClick={() => dispatch(actions.selectAnswer(quiz.answers[1].answer_id))}>
                   {selectedAnswer === quiz.false_answer ? 'SELECTED' : 'Select'}
                 </button>
               </div>
