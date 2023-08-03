@@ -10,10 +10,8 @@ function Quiz(props) {
  const dispatch = useDispatch();
 
  if(quiz) {
-  console.log('quiz.false_answer:', quiz.answers[0].answer_id);
-  console.log('quiz.true_answer:',  quiz.answers[1].answer_id);
-  console.log('submit button:', actions.postAnswer())
-  console.log('quiz', quiz);
+  console.log('quiz0', quiz.answers[0])
+  console.log('quiz1', quiz.answers[1])
  }
 
  useEffect(() => {

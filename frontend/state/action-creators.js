@@ -25,6 +25,7 @@ export function setMessage(message) {
  }
 
 export function setQuiz(quiz) { 
+  console.log('1', quiz)
   const info = {type: types.SET_QUIZ_INTO_STATE, payload: quiz}
   return info;
 }
@@ -94,8 +95,13 @@ export function postAnswer() {
   }
 }
 export function postQuiz() {
-  return function (dispatch) {
-    const quizData = getState().quizData;
+  return function (dispatch, getState) {
+    const form = getState().form;
+    const quizData = {
+      question_text : form.newQuestion,
+      true_answer_text: form.newTrueAnswer,
+      false_answer_text: form.newFalseAnswer,
+    }
     axios.post('http://localhost:9000/api/quiz/new', quizData)
       .then(response => {
         dispatch(setMessage(response.data.message));

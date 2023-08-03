@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { inputChange, resetForm, setQuiz } from '../state/action-creators';
+import { inputChange, resetForm, setQuiz, postQuiz } from '../state/action-creators';
 //import * as actionCreators from '../state/action-creators'
 
 export function Form(props) {
@@ -13,8 +13,9 @@ export function Form(props) {
     evt.preventDefault();
     props.setQuiz(props.form);
     props.resetForm();
+    props.postQuiz();
   }
-
+  console.log('form', props.form);
   return (
     <form id="form" onSubmit={onSubmit}>
       <h2>Create New Quiz</h2>
@@ -26,4 +27,10 @@ export function Form(props) {
   )
 }
 
-export default connect(st => st, {inputChange, setQuiz, resetForm})(Form)
+const mapStateProps = state => {
+  return {
+    form: state.form
+  }
+}
+
+export default connect(mapStateProps, {inputChange, setQuiz, resetForm, postQuiz})(Form)
