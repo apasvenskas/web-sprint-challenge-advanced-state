@@ -9,10 +9,10 @@ function Quiz(props) {
  // use dispatch hook to create a dispatch
  const dispatch = useDispatch();
 
- if(quiz) {
-  console.log('quiz0', quiz.answers[0])
-  console.log('quiz1', quiz.answers[1])
- }
+//  if(quiz) {
+//   console.log('quiz0', quiz.answers[0])
+//   console.log('quiz1', quiz.answers[1])
+//  }
 
  useEffect(() => {
   dispatch(actions.fetchQuiz())
@@ -25,27 +25,22 @@ function Quiz(props) {
 
   return (
     <div id="wrapper">
-      {
-        // quiz already in state? Let's use that, otherwise render "Loading next quiz..."
-        quiz ? (
+{/*       
+        // quiz already in state? Let's use that, otherwise render "Loading next quiz..." */}
+        {quiz ? (
           <>
             <h2>{quiz.question}</h2>
 
             <div id="quizAnswers">
-              <div className={`answer ${getSelectedClass(quiz.true_answer)}`}>
-                {quiz.answers[0].text}
-                <button onClick={() => dispatch(actions.selectAnswer(quiz.answers[0].answer_id))}>
-                  {selectedAnswer === quiz.true_answer ? 'SELECTED' : 'Select'}
+              {quiz.answers?.map((answer) => ( 
+              <div key={answer.answer_id} className={`answer ${getSelectedClass(answer.answer_id)}`}>
+                {answer.text}
+                <button onClick={() => dispatch(actions.selectAnswer(answer.answer_id))}>
+                  {selectedAnswer === answer.answer_id ? 'SELECTED' : 'Select'}
                 </button>
+                </div>
+                ))}
               </div>
-
-              <div className={`answer ${getSelectedClass(quiz.false_answer)}`}>
-                {quiz.answers[1].text}
-                <button onClick={() => dispatch(actions.selectAnswer(quiz.answers[1].answer_id))}>
-                  {selectedAnswer === quiz.false_answer ? 'SELECTED' : 'Select'}
-                </button>
-              </div>
-            </div>
 
             <button id="submitAnswerBtn" onClick={() => dispatch(actions.postAnswer())}>Submit answer</button>
           </>

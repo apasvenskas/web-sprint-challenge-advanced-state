@@ -45,9 +45,9 @@ function infoMessage(state = initialMessageState, action) {
 }
 
 const initialFormState = {
-  newQuestion: '',
-  newTrueAnswer: '',
-  newFalseAnswer: '',
+  question_text: '',
+  true_answer_text: '',
+  false_answer_text: '',
 }
 function form(state = initialFormState, action) {
   switch (action.type) {
@@ -59,7 +59,6 @@ function form(state = initialFormState, action) {
       }
       case RESET_FORM:
         console.log('Current state:', state); 
-      console.log('Next state:', initialFormState); 
         return initialFormState
       default:
         return state

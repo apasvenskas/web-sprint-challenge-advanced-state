@@ -4,9 +4,24 @@ import { inputChange, resetForm, setQuiz, postQuiz } from '../state/action-creat
 //import * as actionCreators from '../state/action-creators'
 
 export function Form(props) {
-
-  const onChange = evt => {
-    props.inputChange(evt.target.id, evt.target.value); 
+  console.log('Form state', props.form)
+  const onChange = evt => { 
+    let payloadChange;
+    switch (evt.target.id){
+      case "new_Question":
+        payloadChange = "question_text";
+        break;
+      case "new_True_Answer":
+        payloadChange = "true_answer_text";
+        break;
+      case "new_False_Answer":
+        payloadChange = "false_answer_text";
+        break;
+      default:
+        payloadChange = "";
+    }
+    props.inputChange(payloadChange, evt.target.value);
+    // console.log('onchange', evt.target.value);
   }
 
   const onSubmit = evt => {
@@ -14,23 +29,27 @@ export function Form(props) {
     props.setQuiz(props.form);
     props.resetForm();
     props.postQuiz();
+    console.log('onSubmit', 'Form submitted')
   }
   console.log('form', props.form);
   return (
     <form id="form" onSubmit={onSubmit}>
       <h2>Create New Quiz</h2>
-      <input maxLength={50} onChange={onChange} id="newQuestion" placeholder="Enter question" />
-      <input maxLength={50} onChange={onChange} id="newTrueAnswer" placeholder="Enter true answer" />
-      <input maxLength={50} onChange={onChange} id="newFalseAnswer" placeholder="Enter false answer" />
-      <button id="submitNewQuizBtn">Submit new quiz</button>
+      <input maxLength={50} onChange={onChange} id="new_Question" placeholder="Enter question" />
+      <input maxLength={50} onChange={onChange} id="new_True_Answer" placeholder="Enter true answer" />
+      <input maxLength={50} onChange={onChange} id="new_False_Answer" placeholder="Enter false answer" />
+
+      <button type='submit' id="submitNewQuizBtn">Submit new quiz</button>
+      {props.error && <p className="error">{props.error}</p>}
+      {props.success && <p className='success'>{props.success}</p>}
     </form>
   )
 }
 
-const mapStateProps = state => {
+const mapStateToProps = state => {
   return {
     form: state.form
   }
 }
 
-export default connect(mapStateProps, {inputChange, setQuiz, resetForm, postQuiz})(Form)
+export default connect(mapStateToProps, {inputChange, setQuiz, resetForm, postQuiz})(Form)

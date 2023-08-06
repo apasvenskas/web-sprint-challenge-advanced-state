@@ -98,22 +98,27 @@ export function postQuiz() {
   return function (dispatch, getState) {
     const form = getState().form;
     const quizData = {
-      question_text : form.newQuestion,
-      true_answer_text: form.newTrueAnswer,
-      false_answer_text: form.newFalseAnswer,
-    }
+      question_text : form.question_text,
+      true_answer_text: form.true_answer_text,
+      false_answer_text: form.false_answer_text,
+    };
+    
     axios.post('http://localhost:9000/api/quiz/new', quizData)
       .then(response => {
         dispatch(setMessage(response.data.message));
         dispatch(resetForm());
       })
       .catch(error => {
-        console.error(error);
-      })
+        if(error.response && error.response.status === 422){
+          dispatch(setMessage('Validation error: Please check your input'));
+        } else {
+          console.error(error);
+        }
+      });
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form
-  }
+  };
 }
 // ❗ On promise rejections, use log statements or breakpoints, and put an appropriate error message in state
 
