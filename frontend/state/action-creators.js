@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as types from './action-types';
+import Message from "../components/Message";
 
 // ❗ You don't need to add extra action creators to achieve MVP
 export function moveClockwise() { 
@@ -47,15 +48,7 @@ export function resetForm() {
  }
 
 // ❗ Async action creators
-// export async function fetchQuiz() {
-//   try {
-//     const API_URL = 'http://localhost:9000/api/quiz/next';
-//     const response = await axios.get(API_URL);
-//     dispatch(setQuiz(response.data));
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
+
 export function fetchQuiz() {
   return function (dispatch) {
     const API_URL = 'http://localhost:9000/api/quiz/next';
@@ -109,11 +102,7 @@ export function postQuiz() {
         dispatch(resetForm());
       })
       .catch(error => {
-        if(error.response && error.response.status === 422){
-          dispatch(setMessage('Validation error: Please check your input'));
-        } else {
-          console.error(error);
-        }
+       Message(error);
       });
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state

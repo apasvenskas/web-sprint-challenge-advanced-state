@@ -28,7 +28,7 @@ export function Form(props) {
     evt.preventDefault();
     props.setQuiz(props.form);
     props.resetForm();
-    props.postQuiz();
+    props.postQuiz()
     console.log('onSubmit', 'Form submitted')
   }
   console.log('form', props.form);

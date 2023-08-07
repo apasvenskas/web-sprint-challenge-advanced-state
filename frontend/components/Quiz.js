@@ -1,5 +1,5 @@
  import React, {useEffect} from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../state/action-creators';
 
 function Quiz(props) {
@@ -9,10 +9,6 @@ function Quiz(props) {
  // use dispatch hook to create a dispatch
  const dispatch = useDispatch();
 
-//  if(quiz) {
-//   console.log('quiz0', quiz.answers[0])
-//   console.log('quiz1', quiz.answers[1])
-//  }
 
  useEffect(() => {
   dispatch(actions.fetchQuiz())
@@ -50,14 +46,5 @@ function Quiz(props) {
   )
 }
 
-// map redux state props
-// const mapStateProps = (state) => {
-//   return {
-//     quiz: state.quiz, //get quiz state
-//     selectedAnswer: state.selectedAnswer, //selected answer state
-//   };
-// };
 
 export default Quiz;
-
-// export default connect(mapStateProps, {fetchQuiz: actions.fetchQuiz, selectAnswer: actions.selectAnswer, postAnswer: actions.postAnswer})(Quiz);

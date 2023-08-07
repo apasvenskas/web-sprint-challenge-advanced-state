@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
  function Message(props) {
   const { infoMessage, setMessage} = props; 
+  
   const handleResponse = (respone) => {
     if (respone.status === 200) {
       setMessage('Nice job! That was the correct answer');
@@ -16,6 +17,9 @@ import { connect } from 'react-redux';
       setMessage(feedBack);
     } else {
       setMessage('Something went wrong. Please try again later.');
+    }
+    if(props.respone) {
+      handleResponse(props.respone);
     }
   }
   return (
