@@ -19,6 +19,8 @@ function Quiz(props) {
     return selectedAnswer === answer ? 'selected' : '';
   };
 
+  const isAnswerSelected = useSelector(state => state.selectedAnswer !== null);
+
   return (
     <div id="wrapper">
 {/*       
@@ -38,7 +40,10 @@ function Quiz(props) {
                 ))}
               </div>
 
-            <button id="submitAnswerBtn" onClick={() => dispatch(actions.postAnswer())}>Submit answer</button>
+            <button id="submitAnswerBtn" onClick={() => dispatch(actions.postAnswer())}
+            disabled={!isAnswerSelected}>
+              Submit answer
+            </button>
           </>
         ) : 'Loading next quiz...'
       }
