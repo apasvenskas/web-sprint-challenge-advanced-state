@@ -1,41 +1,28 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { inputChange, resetForm, setQuiz, postQuiz} from '../state/action-creators';
+import {history, updateHistoryState, getHistoryState} from '../state/historyStore';
+import { useHistory } from '../state/historyStore';
 //import * as actionCreators from '../state/action-creators'
 
 export function Form(props) {
   console.log('Form state', props.form)
 
-  // const useLocalStorage = (key, initialValue) => {
-  //   const [storedValue, setStoredValue] = React.useState(() => {
-  //     const item = localStorage.getItem(key);
-  //     return item ? JSON.parse(item) : initialValue;
-  //   });
+  const {getHistoryState} = useHistory();
 
-  //   useEffect(() => {
-  //     localStorage.setItem(key, JSON.stringify(storedValue));
-  //   }, [key, storedValue]);
+  useEffect(() => {
+    //save the current state in history whn component unmounts
+    return ()=> {
+      updatedHistoryState(props.form);
+    }
+  }, []);
 
-  //   return [storedValue, setStoredValue];
-  // }
-
-  // useEffect(() => {
-  //   const handleLocationChange = (location) => {
-  //     if(location.pathname === '/form') {
-  //       const storedForm = localStorage.getItem('form');
-  //       if(storedForm){
-  //         const parsedForm = JSON.parse(storedForm);
-  //         props.inputChange('question_text', parsedForm.question_text);
-  //         props.inputChange('true_answer_text', parsedForm.true_answer_text);
-  //         props.inputChange('false_answer_text_text', parsedForm.false_answer_text_text);
-  //       }
-  //     }
-  //   }
-  //   const unlisten = history.listen(handleLocationChange);
-  //   return() => unlisten(); 
-  // }, [history, props]);
-
-  
+  useEffect(() => {
+    const savedState = getHistoryState();
+    props.inputChange("question_text", savedState.question_text);
+    props.inputChange("true_answer_text", savedState.true_answer_text);
+    props.inputChange("false_answer_text", savedState.false_answer_text);
+  }, []);
 
   const onChange = evt => { 
     let payloadChange;
@@ -68,9 +55,9 @@ export function Form(props) {
 
   const inputField = () => {
     return (
-      props.form.question_text.trim().length === 0 ||
-      props.form.true_answer_text.trim().length === 0 || 
-      props.form.false_answer_text.trim().length === 0
+      (props.form.question_text || "").trim().length === 0 ||
+      (props.form.true_answer_text || "").trim().length === 0 || 
+      (props.form.false_answer_text || "").trim().length === 0
     )
   }
 
