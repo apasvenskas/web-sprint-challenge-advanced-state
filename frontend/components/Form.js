@@ -1,28 +1,36 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { inputChange, resetForm, setQuiz, postQuiz} from '../state/action-creators';
-import {history, updateHistoryState, getHistoryState} from '../state/historyStore';
-import { useHistory } from '../state/historyStore';
+import { useNavigate } from 'react-router-dom';
 //import * as actionCreators from '../state/action-creators'
 
 export function Form(props) {
   console.log('Form state', props.form)
 
-  const {getHistoryState} = useHistory();
+  // const {updateHistoryState, getHistoryState} = useNavigate();
 
-  useEffect(() => {
-    //save the current state in history whn component unmounts
-    return ()=> {
-      updatedHistoryState(props.form);
-    }
-  }, []);
+  // useEffect(() => {
+  //   //save the current state in history when component unmounts
+  //   const savedState = getHistoryState();
+  //   props.inputChange("question_text", savedState.question_text);
+  //   props.inputChange("true_answer_text", savedState.true_answer_text);
+  //   props.inputChange("false_answer_text", savedState.false_answer_text);
+  //   return ()=> {
+  //     updateHistoryState(props.form);
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    const savedState = getHistoryState();
-    props.inputChange("question_text", savedState.question_text);
-    props.inputChange("true_answer_text", savedState.true_answer_text);
-    props.inputChange("false_answer_text", savedState.false_answer_text);
-  }, []);
+  // const {navigate} = useNavigate();
+
+  // useEffect(() => {
+  //   if(history.location.pathname !== "/quiz-new") {
+  //     navigate("/quiz-new");
+  //   }
+  // }, [history.location]);
+
+  // // useEffect(() => {
+   
+  // // }, []);
 
   const onChange = evt => { 
     let payloadChange;
@@ -54,19 +62,21 @@ export function Form(props) {
   console.log('form', props.form);
 
   const inputField = () => {
-    return (
-      (props.form.question_text || "").trim().length === 0 ||
-      (props.form.true_answer_text || "").trim().length === 0 || 
-      (props.form.false_answer_text || "").trim().length === 0
-    )
+    
+      return Object.values(props.form).some(value => !value.trim().length)
+  
+      // (props.form.question_text || "").trim().length === 0 ||
+      // (props.form.true_answer_text || "").trim().length === 0 || 
+      // (props.form.false_answer_text || "").trim().length === 0
+    
   }
 
   return (
     <form id="form" onSubmit={onSubmit}>
       <h2>Create New Quiz</h2>
-      <input maxLength={50} onChange={onChange} id="new_Question" placeholder="Enter question" />
-      <input maxLength={50} onChange={onChange} id="new_True_Answer" placeholder="Enter true answer" />
-      <input maxLength={50} onChange={onChange} id="new_False_Answer" placeholder="Enter false answer" />
+      <input maxLength={50} onChange={onChange} id="new_Question" placeholder="Enter question" value={props.form.question_text} />
+      <input maxLength={50} onChange={onChange} id="new_True_Answer" placeholder="Enter true answer" value={props.form.true_answer_text}/>
+      <input maxLength={50} onChange={onChange} id="new_False_Answer" placeholder="Enter false answer"value={props.form.false_answer_text}/>
 
       <button type='submit' id="submitNewQuizBtn" disabled={inputField()}>Submit new quiz</button>
       {props.error && <p className="error">{props.error}</p>}

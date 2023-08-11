@@ -26,7 +26,6 @@ export function setMessage(message) {
  }
 
 export function setQuiz(quiz) { 
-  console.log('1', quiz)
   const info = {type: types.SET_QUIZ_INTO_STATE, payload: quiz}
   return info;
 }

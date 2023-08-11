@@ -1,6 +1,7 @@
  import React, {useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../state/action-creators';
+import { useHistory } from '../state/historyStore';
 
 function Quiz(props) {
   // useSelector hook to acces the states.
@@ -20,6 +21,7 @@ function Quiz(props) {
   };
 
   const isAnswerSelected = useSelector(state => state.selectedAnswer !== null);
+
 
   return (
     <div id="wrapper">
