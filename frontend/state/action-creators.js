@@ -51,6 +51,7 @@ export function resetForm() {
 export function fetchQuiz() {
   return function (dispatch) {
     const API_URL = 'http://localhost:9000/api/quiz/next';
+      dispatch(setQuiz(null))
       axios.get(API_URL)
       .then((response) => {
         dispatch(setQuiz(response.data));
@@ -73,13 +74,16 @@ export function postAnswer() {
     const requestData = { answer_id: selectedAnswer, quiz_id: quizId };
     axios.post('http://localhost:9000/api/quiz/answer', requestData)
     .then(response => {
-      dispatch(resetForm());
+      dispatch(selectAnswer(null));
       dispatch(setMessage(response.data.message));
-      dispatch(fetchQuiz());
+      // disatch(fetchQuiz());
     })
     .catch(error => {
       console.error(error);
-    });
+    }
+    ) .finally(() => {
+      dispatch(fetchQuiz())
+    })
     // On successful POST:
     // - Dispatch an action to reset the selected answer state
     // - Dispatch an action to set the server message to state
@@ -97,11 +101,13 @@ export function postQuiz(form) {
     axios.post('http://localhost:9000/api/quiz/new', quizData)
       .then(response => {
         // console.log('response', response.data)
+        dispatch(setQuiz(null));
         dispatch(setMessage(`Congrats: "${response.data.question}" is a great question!`));
         dispatch(resetForm());
       })
       .catch(error => {
-       console.log(error);
+        const errToDisplay = err.response ? err.response.data.message : err.message
+        dispatch(setMessage(errToDisplay))
       });
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
