@@ -7,31 +7,6 @@ import { useNavigate } from 'react-router-dom';
 export function Form(props) {
   console.log('Form state', props.form)
 
-  // const {updateHistoryState, getHistoryState} = useNavigate();
-
-  // useEffect(() => {
-  //   //save the current state in history when component unmounts
-  //   const savedState = getHistoryState();
-  //   props.inputChange("question_text", savedState.question_text);
-  //   props.inputChange("true_answer_text", savedState.true_answer_text);
-  //   props.inputChange("false_answer_text", savedState.false_answer_text);
-  //   return ()=> {
-  //     updateHistoryState(props.form);
-  //   }
-  // }, []);
-
-  // const {navigate} = useNavigate();
-
-  // useEffect(() => {
-  //   if(history.location.pathname !== "/quiz-new") {
-  //     navigate("/quiz-new");
-  //   }
-  // }, [history.location]);
-
-  // // useEffect(() => {
-   
-  // // }, []);
-
   const onChange = evt => { 
     let payloadChange;
     switch (evt.target.id){

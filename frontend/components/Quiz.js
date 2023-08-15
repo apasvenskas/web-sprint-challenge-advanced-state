@@ -1,19 +1,25 @@
- import React, {useEffect} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../state/action-creators';
-import { useHistory } from '../state/historyStore';
+
+
 
 function Quiz(props) {
   // useSelector hook to acces the states.
  const quiz = useSelector(state => state.quiz);
  const selectedAnswer = useSelector(state => state.selectedAnswer);
  // use dispatch hook to create a dispatch
+ const isMounted = useRef(false);
  const dispatch = useDispatch();
 
 
  useEffect(() => {
-  dispatch(actions.fetchQuiz())
- }, []);
+  if (document.getElementById('submitAnswerBtn') || !isMounted.current) {
+    dispatch(actions.fetchQuiz())
+  } else {
+    shouldRenderAndDispatch = false;
+  }
+  }, []);
 
   // return selected class name based on the answer state
   const getSelectedClass = (answer) => {
@@ -35,14 +41,17 @@ function Quiz(props) {
               {quiz.answers?.map((answer) => ( 
               <div key={answer.answer_id} className={`answer ${getSelectedClass(answer.answer_id)}`}>
                 {answer.text}
-                <button onClick={() => dispatch(actions.selectAnswer(answer.answer_id))}>
+                <button onClick={() => dispatch(actions.selectAnswer(answer.answer_id))} >
                   {selectedAnswer === answer.answer_id ? 'SELECTED' : 'Select'}
                 </button>
                 </div>
                 ))}
               </div>
 
-            <button id="submitAnswerBtn" onClick={() => dispatch(actions.postAnswer())}
+            <button id="submitAnswerBtn" onClick={() => {
+            dispatch(actions.postAnswer());
+            //  dispatch(actions.fetchQuiz());
+            }}
             disabled={!isAnswerSelected}>
               Submit answer
             </button>
